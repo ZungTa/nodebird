@@ -16,15 +16,15 @@ db.Sequelize = Sequelize;
 // DB model import
 db.User = require('./user')(sequelize, Sequelize);
 db.Post = require('./post')(sequelize, Sequelize);
-db.HashTag = require('./hashtag')(sequelize, Sequelize);
+db.Hashtag = require('./hashtag')(sequelize, Sequelize);
 
 // 관계 연결 1:N
 db.User.hasMany(db.Post);
 db.Post.belongsTo(db.User);
 
 // 관계 연결 N:M
-db.Post.belongsToMany(db.HashTag, { through: 'PostHashtag' });
-db.HashTag.belongsToMany(db.Post, { through: 'PostHashtag' });
+db.Post.belongsToMany(db.Hashtag, { through: 'PostHashtag' });
+db.Hashtag.belongsToMany(db.Post, { through: 'PostHashtag' });
 
 db.User.belongsToMany(db.User, {
   foreignKey: 'followingId',

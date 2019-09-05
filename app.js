@@ -9,11 +9,13 @@ require('dotenv').config();
 
 // file import
 const pageRouter = require('./routes/page');
+const { sequelize } = require('./models');
 
 // variables
 
 // start
 const app = express();
+sequelize.sync();
 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');

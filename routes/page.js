@@ -1,17 +1,19 @@
 const express = require('express');
+const { mustLoggedIn, mustNotLoggedIn } = require('./middlewares');
+
 const router = express.Router();
 
-router.get('/profile', (req, res) => {
+router.get('/profile', mustLoggedIn, (req, res) => {
   res.render('profile', {
     title: '내 정보 - NodeBird',
     user: null,
   });
 });
 
-router.get('/join', (req, res) => {
+router.get('/join', mustNotLoggedIn, (req, res) => {
   res.render('join', {
     title: '회원가입 - NodeBird',
-    user: null,
+    user: req.user,
     joinError: req.flash('joinError'),
   });
 });
@@ -21,7 +23,7 @@ router.get('/', (req, res, next) => {
   res.render('main', {
     title: 'NodeBird',
     twits: [],
-    user: null,
+    user: req.user,
     loginError: req.flash('loginError'),
   });
 });

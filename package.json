@@ -1,0 +1,14 @@
+{
+  "name": "my-nodebird",
+  "version": "1.0.0",
+  "description": "bwpark's nodebird with nodejsbook",
+  "main": "app.js",
+  "scripts": {
+    "start": "nodemon app"
+  },
+  "keywords": [
+    "nodebird"
+  ],
+  "author": "bwpark",
+  "license": "MIT"
+}

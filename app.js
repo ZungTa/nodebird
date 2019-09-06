@@ -11,6 +11,8 @@ require('dotenv').config();
 // file import
 const pageRouter = require('./routes/page');
 const authRouter = require('./routes/auth');
+const postRouter = require('./routes/post');
+const userRouter = require('./routes/user');
 const { sequelize } = require('./models');
 const passportConfig = require('./passport');
 
@@ -18,8 +20,14 @@ const passportConfig = require('./passport');
 
 // start
 const app = express();
-sequelize.sync();
+console.log('const app = express();');
+sequelize.sync().then((a, b, c) => {
+  console.log('시퀄라이즈 then');
+  console.log(a.models);
+});
+console.log('sequelize.sync();');
 passportConfig(passport);
+console.log('passportConfig(passport);');
 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
@@ -27,6 +35,7 @@ app.set('port', process.env.PORT || 8081);
 
 app.use(morgan('dev'));
 app.use(express.static(path.join(__dirname, 'public')));
+app.use('/img', express.static(path.join(__dirname, 'uploads')));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser(process.env.COOKIE_SECRET));
@@ -43,21 +52,26 @@ app.use(
 );
 app.use(flash());
 
+// use passport
 app.use(passport.initialize());
 app.use(passport.session());
 
+// use router
 app.use('/', pageRouter);
 app.use('/auth', authRouter);
+app.use('/post', postRouter);
+app.use('/user', userRouter);
 
+// error 처리
 app.use((req, res, next) => {
   const err = new Error('Not Found');
   err.status = 404;
   next(err);
 });
 
-app.use((err, req, res) => {
-  res.locales.message = err.message;
-  res.locales.error = req.app.get('env') === 'development' ? err : {};
+app.use((err, req, res, next) => {
+  res.locals.message = err.message;
+  res.locals.error = req.app.get('env') === 'development' ? err : {};
   res.status(err.status || 500);
   res.render('error');
 });

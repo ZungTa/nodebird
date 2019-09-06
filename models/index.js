@@ -17,14 +17,17 @@ db.Sequelize = Sequelize;
 db.User = require('./user')(sequelize, Sequelize);
 db.Post = require('./post')(sequelize, Sequelize);
 db.Hashtag = require('./hashtag')(sequelize, Sequelize);
+console.log('db model imported', db.User, db.Post);
 
 // 관계 연결 1:N
 db.User.hasMany(db.Post);
 db.Post.belongsTo(db.User);
+console.log('관계 연결 1:N');
 
 // 관계 연결 N:M
 db.Post.belongsToMany(db.Hashtag, { through: 'PostHashtag' });
 db.Hashtag.belongsToMany(db.Post, { through: 'PostHashtag' });
+console.log('관계 연결 n:m');
 
 db.User.belongsToMany(db.User, {
   foreignKey: 'followingId',
@@ -36,6 +39,7 @@ db.User.belongsToMany(db.User, {
   as: 'Followings',
   through: 'Follow',
 });
+console.log('팔로우 생성');
 
 module.exports = db;
 

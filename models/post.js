@@ -12,7 +12,7 @@ module.exports = (sequelize, DataTypes) =>
       },
     },
     {
-      timestamp: true,
+      timestamps: true,
       paranoid: true,
     },
   );

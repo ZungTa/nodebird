@@ -7,7 +7,7 @@ const router = express.Router();
 
 router.post('/:id/follow', mustLoggedIn, async (req, res, next) => {
   try {
-    const user = await User.find({
+    const user = await User.findOne({
       where: {
         id: req.user.id,
       },

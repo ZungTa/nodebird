@@ -7,7 +7,7 @@ const router = express.Router();
 router.get('/profile', mustLoggedIn, (req, res) => {
   res.render('profile', {
     title: '내 정보 - NodeBird',
-    user: null,
+    user: req.user,
   });
 });
 

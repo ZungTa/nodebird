@@ -83,7 +83,7 @@ router.get('/hashtag', async (req, res, next) => {
     }
     return res.render('main', {
       title: `${query} | NodeBird`,
-      user: req.uset,
+      user: req.user,
       twits: posts,
     });
   } catch (error) {

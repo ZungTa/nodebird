@@ -20,7 +20,6 @@ router.get('/join', mustNotLoggedIn, (req, res) => {
 });
 
 router.get('/', (req, res, next) => {
-  console.log('router get /');
   Post.findAll({
     include: {
       model: User,
@@ -29,7 +28,6 @@ router.get('/', (req, res, next) => {
     order: [['createdAt', 'DESC']],
   })
     .then((posts) => {
-      console.log('Post.findAll? ', posts);
       res.render('main', {
         title: 'NodeBird',
         twits: posts,

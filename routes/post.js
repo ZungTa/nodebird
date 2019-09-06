@@ -23,10 +23,8 @@ const upload = multer({
     },
     filename(req, file, callback) {
       const ext = path.extname(file.originalname);
-      console.log('ext? ', ext);
       const fileName =
         path.basename(file.originalname, ext) + Date.now().valueOf() + ext;
-      console.log('fileName? ', fileName);
       callback(null, fileName);
     },
   }),
@@ -34,13 +32,11 @@ const upload = multer({
 });
 
 router.post('/img', mustLoggedIn, upload.single('img'), (req, res) => {
-  console.log('post /img', req.file);
   res.json({ url: `/img/${req.file.filename}` });
 });
 
 const upload2 = multer();
 router.post('/', mustLoggedIn, upload2.none(), async (req, res, next) => {
-  console.log('post /post ', req.body);
   try {
     const post = await Post.create({
       content: req.body.content,
@@ -48,7 +44,6 @@ router.post('/', mustLoggedIn, upload2.none(), async (req, res, next) => {
       userId: req.user.id,
     });
     const hashtags = req.body.content.match(/#[^\s]*/g);
-    console.log('hashtags ', hashtags);
     if (hashtags) {
       const result = await Promise.all(
         hashtags.map((tag) =>
@@ -59,7 +54,6 @@ router.post('/', mustLoggedIn, upload2.none(), async (req, res, next) => {
           }),
         ),
       );
-      console.log('post / hashtags', result);
       await post.addHashtags(result.map((r) => r[0]));
     }
     res.redirect('/');

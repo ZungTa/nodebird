@@ -20,14 +20,8 @@ const passportConfig = require('./passport');
 
 // start
 const app = express();
-console.log('const app = express();');
-sequelize.sync().then((a, b, c) => {
-  console.log('시퀄라이즈 then');
-  console.log(a.models);
-});
-console.log('sequelize.sync();');
+sequelize.sync();
 passportConfig(passport);
-console.log('passportConfig(passport);');
 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');

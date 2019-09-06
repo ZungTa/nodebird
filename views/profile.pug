@@ -6,9 +6,34 @@ block content
       h2 팔로잉 목록
       if user.Followings
         for following in user.Followings
-          div= following.nick
+          div
+            input.following-user-id(type="hidden", value=following.id)
+            span.nick= following.nick
+            button.unFollowBtn 끊기
     .followers.half
       h2 팔로워 목록
       if user.Followers
         for follower in user.Followers
           div= follower.nick
+  script.
+    document.querySelectorAll('.unFollowBtn').forEach(function(btn) {
+      // unFollow 하기
+      btn.addEventListener('click', (event) => {
+        // get target userId
+        const userId = btn.parentNode.querySelector('.following-user-id').value;
+        
+        if (confirm('언팔로우 하시겠습니까?')) {
+          const xhr = new XMLHttpRequest();
+          xhr.onload = function(p1) {
+            console.log(p1);
+            if (xhr.status === 200) {
+              location.reload();
+            } else {
+              console.error(xhr.responseText);
+            }
+          };
+          xhr.open('POST', '/user/' + userId + '/unFollow');
+          xhr.send();
+        }
+      })
+    })

@@ -1,6 +1,19 @@
 extends layout
 
 block content
+  form#change-profile(action='/auth/change' method='post')
+    .input-group
+      label(for='change-email') 이메일
+      input#change-email(type='email' name='email' value= user.email)
+    .input-group
+      label(for='change-nick') 닉네임
+      input#change-nick(type='text' name='nick' value= user.nick)
+    .input-group
+      label(for='change-password') 비밀번호
+      input#change-password(type='password' name='password')
+    if changeError
+      .error-message= changeError
+    button#change-btn.btn(type='submit') 변경하기
   .timeline
     .followings.half
       h2 팔로잉 목록
@@ -37,3 +50,4 @@ block content
         }
       })
     })
+

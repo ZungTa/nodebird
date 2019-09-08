@@ -68,4 +68,13 @@ router.get(
   },
 );
 
+router.post('/change', mustLoggedIn, (req, res, next) => {
+  console.log('pbw', req.body);
+  const { email, nick, password } = req.body;
+
+  if (!email || !nick) {
+    // 에러
+  }
+});
+
 module.exports = router;

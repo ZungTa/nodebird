@@ -178,7 +178,13 @@ footer {
 }
 
 /* bwpark */
-.nick {
+
+#change-profile {
+  margin-top: 15px;
+  display: inline-block;
+  width: 500px;
 }
-.unFollowBtn {
+#change-profile #change-btn {
+  float: right;
+  margin-right: 5%;
 }

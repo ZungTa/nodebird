@@ -68,12 +68,36 @@ router.get(
   },
 );
 
-router.post('/change', mustLoggedIn, (req, res, next) => {
+router.post('/change', mustLoggedIn, async (req, res, next) => {
   console.log('pbw', req.body);
   const { email, nick, password } = req.body;
+  console.log('req.user? ', req.user.id);
 
-  if (!email || !nick) {
+  if (!email || !nick || !password) {
     // 에러
+    req.flash('changeError', '양식을 채워주세요');
+    return res.redirect('/profile');
+  }
+
+  try {
+    const hash = await bcrypt.hash(password, 12);
+    const result = await User.update(
+      {
+        email,
+        nick,
+        password: hash,
+      },
+      {
+        where: {
+          id: req.user.id,
+        },
+      },
+    );
+    console.log('update result? ', result);
+    res.redirect('/');
+  } catch (e) {
+    console.error(e);
+    next(e);
   }
 });
 

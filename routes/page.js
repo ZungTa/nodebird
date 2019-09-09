@@ -8,6 +8,7 @@ router.get('/profile', mustLoggedIn, (req, res) => {
   res.render('profile', {
     title: '내 정보 - NodeBird',
     user: req.user,
+    changeError: req.flash('changeError'),
   });
 });
 

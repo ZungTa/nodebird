@@ -28,11 +28,32 @@ router.get('/', (req, res, next) => {
     },
     order: [['createdAt', 'DESC']],
   })
-    .then((posts) => {
+    .then(async (posts) => {
+      let likeUserIds;
+      for (post of posts) {
+        const like = await post.getLike();
+        // console.log('post like? ', like);
+        if (!like || like.length <= 0) {
+          console.log('like return');
+          continue;
+        }
+        post.likeUserIds = like.map((u) => u.id);
+        // console.log('likeUserIds? inside ', likeUserIds);
+      }
+      for (post of posts) {
+        console.log(
+          'post.likeUserIds',
+          post.id,
+          post.content,
+          post.likeUserIds,
+        );
+      }
+      // console.log('likeUserIds? outside ', likeUserIds);
       res.render('main', {
         title: 'NodeBird',
         twits: posts,
         user: req.user,
+        likeUserIds,
         loginError: req.flash('loginError'),
       });
     })

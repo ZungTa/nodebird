@@ -38,6 +38,18 @@ db.User.belongsToMany(db.User, {
   through: 'Follow',
 });
 
+// 관계연결 게시글 좋아요
+db.User.belongsToMany(db.Post, {
+  foreignKey: 'userId',
+  through: 'LikePosts',
+  as: 'Like',
+});
+db.Post.belongsToMany(db.User, {
+  foreignKey: 'postId',
+  through: 'LikePosts',
+  as: 'Like',
+});
+
 module.exports = db;
 
 // 'use strict';

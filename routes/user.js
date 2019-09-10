@@ -3,6 +3,7 @@ const express = require('express');
 const { mustLoggedIn } = require('./middlewares');
 const {
   User,
+  Post,
   sequelize: {
     models: { Follow },
   },
@@ -37,16 +38,56 @@ router.post('/:id/follow', mustLoggedIn, async (req, res, next) => {
 });
 
 router.post('/:id/unFollow', mustLoggedIn, async (req, res, next) => {
-  const follow = await Follow.findOne({
+  const user = await User.findOne({
     where: {
-      followerId: req.user.id,
-      followingId: req.params.id,
+      id: req.user.id,
     },
   });
+  /**
+   * @note 언팔로우 쉬운 방법이 있었다..
+   */
+  await user.removeFollowing(req.params.id);
+  // const follow = await Follow.findOne({
+  //   where: {
+  //     followerId: req.user.id,
+  //     followingId: req.params.id,
+  //   },
+  // });
 
-  await follow.destroy();
+  // await follow.destroy();
 
   res.send('success');
+});
+
+router.post('/:postId/like', mustLoggedIn, async (req, res, next) => {
+  try {
+    const user = await User.findOne({
+      where: {
+        id: req.user.id,
+      },
+    });
+    const result = await user.addLike(req.params.postId);
+    res.send('success');
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
+});
+
+router.post('/:postId/unLike', mustLoggedIn, async (req, res, next) => {
+  try {
+    const user = await User.findOne({
+      where: {
+        id: req.user.id,
+      },
+    });
+
+    await user.removeLike(req.params.postId);
+    return res.send('success');
+  } catch (err) {
+    console.error(err);
+    next(err);
+  }
 });
 
 module.exports = router;

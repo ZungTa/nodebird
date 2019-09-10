@@ -37,6 +37,7 @@ block content
           if twit.img
             .twit-img
               img(src=twit.img alt='섬네일')
+  script(src='/public.js')
   script.
     if (document.getElementById('img')) {
       document.getElementById('img').addEventListener('change', function (e) {
@@ -132,6 +133,8 @@ block content
     document.querySelectorAll('.twit-delete').forEach(function (tag) {
       tag.addEventListener('click', function() {
         console.log('게시글 삭제 클릭');
+        //- const myUser = #{user};
+        //- console.log(myUser.id);
         const isLoggedIn = document.querySelector('#my-id');
         if (!isLoggedIn) {
           return;

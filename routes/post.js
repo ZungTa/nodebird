@@ -86,4 +86,8 @@ router.get('/hashtag', async (req, res, next) => {
   }
 });
 
+router.post('/delete', async (req, res, next) => {
+  res.send('success');
+});
+
 module.exports = router;
